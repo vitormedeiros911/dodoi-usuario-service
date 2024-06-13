@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
+import { StatusEnum } from '../enum/status.enum';
 import { IEndereco } from '../interface/endereco.interface';
 
 @Schema({ timestamps: true, collection: 'usuarios' })
@@ -14,10 +15,13 @@ export class Usuario {
   email: string;
 
   @Prop({ required: true })
-  urlImagem: string;
+  cpf: string;
 
-  @Prop({ required: true, select: false })
-  senha: string;
+  @Prop({ required: true, default: StatusEnum.ATIVO })
+  status: string;
+
+  @Prop({ required: true })
+  urlImagem: string;
 
   @Prop({ required: true })
   dataNascimento: Date;
