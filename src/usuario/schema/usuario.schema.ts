@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
+import { PerfilEnum } from '../enum/perfil.enum';
 import { StatusEnum } from '../enum/status.enum';
 import { IEndereco } from '../interface/endereco.interface';
 
@@ -42,6 +43,12 @@ export class Usuario {
     required: true,
   })
   endereco: IEndereco;
+
+  @Prop({ required: true, enum: PerfilEnum, type: [String] })
+  perfis: PerfilEnum[];
+
+  @Prop({ required: false })
+  idFarmacia?: string;
 }
 
 export const UsuarioSchema = SchemaFactory.createForClass(Usuario);
