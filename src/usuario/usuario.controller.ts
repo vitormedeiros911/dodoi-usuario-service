@@ -12,4 +12,11 @@ export class UsuarioController {
   async criarUsuario(@Payload() usuario: Usuario) {
     return this.usuarioService.criarUsuario(usuario);
   }
+
+  @MessagePattern('buscar-usuario-para-autenticacao')
+  async buscarUsuarioParaAutenticacao(
+    @Payload() payload: { id: string; email: string },
+  ) {
+    return this.usuarioService.buscarUsuarioParaAutenticacao(payload);
+  }
 }

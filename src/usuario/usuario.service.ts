@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -36,7 +40,7 @@ export class UsuarioService {
 
       if (!farmacia)
         throw new RpcException(
-          new BadRequestException('Farmácia não encontrada.'),
+          new NotFoundException('Não foi possível encontrar a farmácia.'),
         );
     }
 
@@ -46,5 +50,19 @@ export class UsuarioService {
     });
 
     novoUsuario.save();
+  }
+
+  async buscarUsuarioParaAutenticacao(payload: { id: string; email: string }) {
+    const { id, email } = payload;
+
+    const query = this.usuarioModel
+      .findOne()
+      .select(['id', 'nome', 'email', 'idFarmacia', 'perfis']);
+
+    if (id) query.where('id').equals(id);
+
+    if (email) query.where('email').equals(email);
+
+    return query.exec();
   }
 }
