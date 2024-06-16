@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
 
 import { Usuario } from './schema/usuario.schema';
 import { UsuarioService } from './usuario.service';
@@ -13,10 +13,20 @@ export class UsuarioController {
     return this.usuarioService.criarUsuario(usuario);
   }
 
-  @MessagePattern('buscar-usuario-para-autenticacao')
-  async buscarUsuarioParaAutenticacao(
-    @Payload() payload: { id: string; email: string },
+  @MessagePattern('buscar-usuario')
+  async buscarUsuario(@Payload() payload: { id?: string; email?: string }) {
+    return this.usuarioService.buscarUsuario(payload);
+  }
+
+  @MessagePattern('atualizar-usuario')
+  async atualizarUsuario(@Payload() usuario: Usuario) {
+    await this.usuarioService.atualizarUsuario(usuario);
+  }
+
+  @EventPattern('associar-usuario-admin-farmacia')
+  async associarUsuarioAdminFarmacia(
+    @Payload() payload: { idUsuario: string; idFarmacia: string },
   ) {
-    return this.usuarioService.buscarUsuarioParaAutenticacao(payload);
+    return this.usuarioService.associarUsuarioAdminFarmacia(payload);
   }
 }
