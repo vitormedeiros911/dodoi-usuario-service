@@ -33,6 +33,7 @@ export class UsuarioService {
     const novoUsuario = new this.usuarioModel({
       id: uuid(),
       ...usuario,
+      perfis: [PerfilEnum.CLIENTE],
     });
 
     await novoUsuario.save();
