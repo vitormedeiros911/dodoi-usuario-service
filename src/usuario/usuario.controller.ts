@@ -29,4 +29,9 @@ export class UsuarioController {
   ) {
     return this.usuarioService.associarUsuarioAdminFarmacia(payload);
   }
+
+  @MessagePattern('buscar-endereco-por-id-usuario')
+  async buscarEnderecoPorIdUsuario(@Payload() idUsuario: string) {
+    return this.usuarioService.buscarEnderecoPorIdUsuario(idUsuario);
+  }
 }

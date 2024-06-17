@@ -87,4 +87,13 @@ export class UsuarioService {
       },
     );
   }
+
+  async buscarEnderecoPorIdUsuario(idUsuario: string) {
+    return this.usuarioModel
+      .findOne({ id: idUsuario })
+      .select(['id', 'endereco'])
+      .where('status')
+      .equals(StatusEnum.ATIVO)
+      .exec();
+  }
 }
