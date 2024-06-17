@@ -18,6 +18,11 @@ export class UsuarioController {
     return this.usuarioService.buscarUsuario(payload);
   }
 
+  @MessagePattern('buscar-perfil-usuario')
+  async buscarPerfilUsuario(@Payload() idUsuario: string) {
+    return this.usuarioService.buscarPerfilUsuario(idUsuario);
+  }
+
   @MessagePattern('atualizar-usuario')
   async atualizarUsuario(@Payload() usuario: Usuario) {
     await this.usuarioService.atualizarUsuario(usuario);

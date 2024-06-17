@@ -96,4 +96,8 @@ export class UsuarioService {
       .equals(StatusEnum.ATIVO)
       .exec();
   }
+
+  async buscarPerfilUsuario(id: string) {
+    return this.usuarioModel.findOne({ id }).exec();
+  }
 }
