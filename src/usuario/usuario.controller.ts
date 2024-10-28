@@ -28,6 +28,11 @@ export class UsuarioController {
     await this.usuarioService.atualizarUsuario(usuario);
   }
 
+  @MessagePattern('inativar-usuario')
+  async inativarUsuario(@Payload() usuario: Usuario) {
+    await this.usuarioService.inativarUsuario(usuario);
+  }
+
   @EventPattern('associar-usuario-admin-farmacia')
   async associarUsuarioAdminFarmacia(
     @Payload() payload: { idUsuario: string; idFarmacia: string },

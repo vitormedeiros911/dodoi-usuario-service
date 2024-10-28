@@ -68,6 +68,13 @@ export class UsuarioService {
     await this.usuarioModel.updateOne({ id: usuario.id }, usuario);
   }
 
+  async inativarUsuario(usuario: Usuario) {
+    await this.usuarioModel.updateOne(
+      { id: usuario.id },
+      { status: StatusEnum.INATIVO },
+    );
+  }
+
   async associarUsuarioAdminFarmacia(payload: {
     idUsuario: string;
     idFarmacia: string;
