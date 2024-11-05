@@ -16,19 +16,15 @@ export class UsuarioService {
   ) {}
 
   async criarUsuario(usuario: Usuario) {
-    usuario.cpf = removeMask(usuario.cpf);
-
     const usuarioExistente = await this.usuarioModel
       .findOne({
-        cpf: usuario.cpf,
+        email: usuario.email,
       })
       .select(['id'])
       .exec();
 
     if (usuarioExistente)
       throw new RpcException(new BadRequestException('Usuário já cadastrado.'));
-
-    usuario.endereco.cep = removeMask(usuario.endereco.cep);
 
     const novoUsuario = new this.usuarioModel({
       id: uuid(),
@@ -65,6 +61,11 @@ export class UsuarioService {
   }
 
   async atualizarUsuario(usuario: Usuario) {
+    if (usuario.cpf) usuario.cpf = removeMask(usuario.cpf);
+    if (usuario.telefone) usuario.telefone = removeMask(usuario.telefone);
+    if (usuario.endereco.cep)
+      usuario.endereco.cep = removeMask(usuario.endereco.cep);
+
     await this.usuarioModel.updateOne({ id: usuario.id }, usuario);
   }
 

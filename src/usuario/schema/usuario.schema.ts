@@ -15,7 +15,7 @@ export class Usuario {
   @Prop({ required: true })
   email: string;
 
-  @Prop({ required: true })
+  @Prop({ required: false })
   cpf: string;
 
   @Prop({ required: true, default: StatusEnum.ATIVO })
@@ -24,23 +24,23 @@ export class Usuario {
   @Prop({ required: true })
   urlImagem: string;
 
-  @Prop({ required: true })
+  @Prop({ required: false })
   dataNascimento: Date;
 
-  @Prop({ required: true })
+  @Prop({ required: false })
   telefone: string;
 
   @Prop({
     type: {
-      logradouro: { type: String, required: true },
-      numero: { type: String, required: true },
+      logradouro: { type: String, required: false },
+      numero: { type: String, required: false },
       complemento: { type: String, required: false },
-      bairro: { type: String, required: true },
-      cidade: { type: String, required: true },
-      uf: { type: String, required: true },
-      cep: { type: String, required: true },
+      bairro: { type: String, required: false },
+      cidade: { type: String, required: false },
+      uf: { type: String, required: false },
+      cep: { type: String, required: false },
     },
-    required: true,
+    required: false,
   })
   endereco: IEndereco;
 
