@@ -48,7 +48,7 @@ export class UsuarioService {
 
     const query = this.usuarioModel
       .findOne()
-      .select(['id', 'nome', 'email', 'idFarmacia', 'perfis']);
+      .select(['id', 'nome', 'email', 'idFarmacia', 'perfis', 'urlImagem']);
 
     if (id) query.where('id').equals(id);
 
