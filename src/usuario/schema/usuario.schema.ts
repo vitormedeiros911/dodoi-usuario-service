@@ -48,6 +48,9 @@ export class Usuario {
   perfis: PerfilEnum[];
 
   @Prop({ required: false })
+  idContaStripe: string;
+
+  @Prop({ required: false })
   idFarmacia?: string;
 }
 

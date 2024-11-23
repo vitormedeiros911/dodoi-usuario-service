@@ -1,5 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { RpcException } from '@nestjs/microservices';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { v4 as uuid } from 'uuid';
@@ -16,27 +15,17 @@ export class UsuarioService {
   ) {}
 
   async criarUsuario(usuario: Usuario) {
-    const usuarioExistente = await this.usuarioModel
-      .findOne({
-        email: usuario.email,
-      })
-      .select(['id'])
-      .exec();
-
-    if (usuarioExistente)
-      throw new RpcException(new BadRequestException('Usuário já cadastrado.'));
+    const id = uuid();
 
     const novoUsuario = new this.usuarioModel({
-      id: uuid(),
+      id,
       ...usuario,
       perfis: [PerfilEnum.CLIENTE],
     });
 
     await novoUsuario.save();
 
-    return {
-      mensagem: 'Usuário criado com sucesso',
-    };
+    return this.buscarUsuario({ id });
   }
 
   async buscarUsuario(payload: {

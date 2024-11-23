@@ -23,7 +23,7 @@ export class UsuarioController {
     return this.usuarioService.buscarPerfilUsuario(idUsuario);
   }
 
-  @MessagePattern('atualizar-usuario')
+  @EventPattern('atualizar-usuario')
   async atualizarUsuario(@Payload() usuario: Usuario) {
     await this.usuarioService.atualizarUsuario(usuario);
   }
