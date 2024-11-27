@@ -37,7 +37,15 @@ export class UsuarioService {
 
     const query = this.usuarioModel
       .findOne()
-      .select(['id', 'nome', 'email', 'idFarmacia', 'perfis', 'urlImagem']);
+      .select([
+        'id',
+        'nome',
+        'email',
+        'idFarmacia',
+        'perfis',
+        'urlImagem',
+        'status',
+      ]);
 
     if (id) query.where('id').equals(id);
 
@@ -58,11 +66,15 @@ export class UsuarioService {
     await this.usuarioModel.updateOne({ id: usuario.id }, usuario);
   }
 
-  async inativarUsuario(usuario: Usuario) {
+  async inativarUsuario(idUsuario: string) {
     await this.usuarioModel.updateOne(
-      { id: usuario.id },
+      { id: idUsuario },
       { status: StatusEnum.INATIVO },
     );
+  }
+
+  async ativarUsuario(email: string) {
+    await this.usuarioModel.updateOne({ email }, { status: StatusEnum.ATIVO });
   }
 
   async associarUsuarioAdminFarmacia(payload: {
