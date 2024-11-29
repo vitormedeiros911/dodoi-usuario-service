@@ -3,6 +3,7 @@ import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
 
 import { Usuario } from './schema/usuario.schema';
 import { UsuarioService } from './usuario.service';
+import { StatusEnum } from './enum/status.enum';
 
 @Controller('usuario')
 export class UsuarioController {
@@ -14,7 +15,9 @@ export class UsuarioController {
   }
 
   @MessagePattern('buscar-usuario')
-  async buscarUsuario(@Payload() payload: { id?: string; email?: string }) {
+  async buscarUsuario(
+    @Payload() payload: { id?: string; email?: string; status?: StatusEnum },
+  ) {
     return this.usuarioService.buscarUsuario(payload);
   }
 
