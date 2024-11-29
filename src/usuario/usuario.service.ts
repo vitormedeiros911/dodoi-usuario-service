@@ -63,6 +63,10 @@ export class UsuarioService {
     if (usuario.endereco.cep)
       usuario.endereco.cep = removeMask(usuario.endereco.cep);
 
+    const dataNascimento = usuario.dataNascimento as any as string;
+
+    usuario.dataNascimento = new Date(dataNascimento);
+
     await this.usuarioModel.updateOne({ id: usuario.id }, usuario);
   }
 
