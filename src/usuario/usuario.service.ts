@@ -60,12 +60,8 @@ export class UsuarioService {
   async atualizarUsuario(usuario: Usuario) {
     if (usuario.cpf) usuario.cpf = removeMask(usuario.cpf);
     if (usuario.telefone) usuario.telefone = removeMask(usuario.telefone);
-    if (usuario.endereco.cep)
+    if (usuario.endereco?.cep)
       usuario.endereco.cep = removeMask(usuario.endereco.cep);
-
-    const dataNascimento = usuario.dataNascimento as any as string;
-
-    usuario.dataNascimento = new Date(dataNascimento);
 
     await this.usuarioModel.updateOne({ id: usuario.id }, usuario);
   }
