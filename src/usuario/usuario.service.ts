@@ -97,10 +97,10 @@ export class UsuarioService {
     );
   }
 
-  async buscarEnderecoPorIdUsuario(idUsuario: string) {
+  async buscarContato(idUsuario: string) {
     return this.usuarioModel
       .findOne({ id: idUsuario })
-      .select(['id', 'endereco'])
+      .select(['endereco', 'id', 'nome', 'telefone', 'email'])
       .where('status')
       .equals(StatusEnum.ATIVO)
       .exec();
