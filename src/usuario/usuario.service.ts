@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { v4 as uuid } from 'uuid';
 
+import { ClientProxyService } from '../client-proxy/client-proxy.service';
 import { removeMask } from '../shared/functions/remove-mask';
 import { PerfilEnum } from './enum/perfil.enum';
 import { StatusEnum } from './enum/status.enum';
@@ -12,7 +13,11 @@ import { Usuario } from './schema/usuario.schema';
 export class UsuarioService {
   constructor(
     @InjectModel('Usuario') private readonly usuarioModel: Model<Usuario>,
+    private readonly clientProxyService: ClientProxyService,
   ) {}
+
+  private clientFarmaciaBackend =
+    this.clientProxyService.getClientProxyFarmaciaServiceInstance();
 
   async criarUsuario(usuario: Usuario) {
     const id = uuid();
@@ -67,6 +72,11 @@ export class UsuarioService {
   }
 
   async inativarUsuario(idUsuario: string) {
+    const usuario = await this.buscarUsuario({ id: idUsuario });
+
+    if (usuario.idFarmacia)
+      this.clientFarmaciaBackend.emit('inativar-farmacia', usuario.idFarmacia);
+
     await this.usuarioModel.updateOne(
       { id: idUsuario },
       { status: StatusEnum.INATIVO },
@@ -74,6 +84,14 @@ export class UsuarioService {
   }
 
   async ativarUsuario(email: string) {
+    const usuario = await this.buscarUsuario({
+      email,
+      status: StatusEnum.INATIVO,
+    });
+
+    if (usuario.idFarmacia)
+      this.clientFarmaciaBackend.emit('ativar-farmacia', usuario.idFarmacia);
+
     await this.usuarioModel.updateOne({ email }, { status: StatusEnum.ATIVO });
   }
 
